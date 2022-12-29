@@ -21,13 +21,15 @@ console.log(galleryItems);
 
 document.querySelector("div.gallery").addEventListener("click", (event) => {
   event.preventDefault();
-  console.log(event.target.getAttribute("data-source"));
   const instance = basicLightbox.create(`
-  <img src = ${event.target.dataset.source}>
- 
+  <img src = ${event.target.getAttribute("data-source")}>
 `);
-  console.log(event.target.alt);
   instance.show();
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      instance.close();
+      console.log("pressed ESC");
+    }
+  });
 });
-
-
