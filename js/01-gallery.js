@@ -18,18 +18,28 @@ galleryItems.forEach(function (galleryItem) {
 });
 
 console.log(galleryItems);
+let instance = {};
+
+let handler = function (event) {
+  if (event.key === "Escape") {
+    instance.close();
+    console.log("pressed ESC");
+  }
+};
 
 document.querySelector("div.gallery").addEventListener("click", (event) => {
   event.preventDefault();
-  const instance = basicLightbox.create(`
+  instance = basicLightbox.create(
+    `
   <img src = ${event.target.getAttribute("data-source")}>
-`);
-  instance.show();
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      instance.close();
-      console.log("pressed ESC");
+`,
+    {
+      onClose: (instance) => {
+        document.removeEventListener("keydown", handler, false);
+      },
     }
-  });
+  );
+  instance.show();
+  // Closing modal on Esc
+  document.addEventListener("keydown", handler);
 });
